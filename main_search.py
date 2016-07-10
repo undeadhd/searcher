@@ -1,8 +1,11 @@
 import vk
 import time
+import requests
+import os
+
 
 def req_func(off, pep, wom, group):
-    req = api.groups.getMembers(group_id = group, offset = off, fields = ['sex', 'bdate','city'], count = pep)
+    req = api.groups.getMembers(group_id = group, offset = off, fields = ['sex', 'bdate','city', 'photo_400_orig', 'photo_50', 'relation'], count = pep)
     req = req['users']
     countWoman = wom
     for i in req:
@@ -24,11 +27,41 @@ def req_func(off, pep, wom, group):
                             if i['city'] == 1:
                                 print('Москва')
                                 print("https://vk.com/id", i['uid'], sep='')
-                                print('____________________________')
+                                print('______________________________')
+                                if "photo_400_orig" in i:
+                                    id_str = str(i['uid'])
+                                    file_name = group + "/" + id_str + ".png"
+                                    p = requests.get(i['photo_400_orig'])
+                                    out = open(file_name, "wb")
+                                    out.write(p.content)
+                                    out.close()
+                                else:
+                                    if "photo_50" in i:
+                                        id_str = str(i['uid'])
+                                        file_name = group + "/" + id_str + ".png"
+                                        p = requests.get(i['photo_50'])
+                                        out = open(file_name, "wb")
+                                        out.write(p.content)
+                                        out.close()
                             else:
                                 print('Павловский Посад')
                                 print("https://vk.com/id", i['uid'], sep='')
-                                print('____________________________')
+                                print('______________________________')
+                                if "photo_400_orig" in i:
+                                    id_str = str(i['uid'])
+                                    file_name = group + "/" + id_str + ".png"
+                                    p = requests.get(i['photo_400_orig'])
+                                    out = open(file_name, "wb")
+                                    out.write(p.content)
+                                    out.close()
+                                else:
+                                    if "photo_50" in i:
+                                        id_str = str(i['uid'])
+                                        file_name = group + "/" + id_str + ".png"
+                                        p = requests.get(i['photo_50'])
+                                        out = open(file_name, "wb")
+                                        out.write(p.content)
+                                        out.close()
     return countWoman
 
 
@@ -45,12 +78,16 @@ session = vk.AuthSession(app_id=id_app, user_login=login, user_password=password
 api = vk.API(session)
 print('ID группы')
 group = input()
+os.mkdir(group)
+
 req = api.groups.getMembers(group_id = group,fields = 'counters')
 
 maxPeople = req['count']
 iterator_count_people = maxPeople//1000
 it = iter(range(iterator_count_people-1))
-print(maxPeople, iterator_count_people)
+print("_______________________________")
+print("| ",maxPeople, " | ", iterator_count_people, " |")
+print("_______________________________")
 
 for i in it:
     countWoman = req_func(off, countPeople, countWoman, group)
