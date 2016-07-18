@@ -1,3 +1,4 @@
+#MIT license
 import vk
 import time
 import requests
@@ -68,11 +69,12 @@ def req_func(off, pep, wom, group):
 off = 0
 countPeople = 1000
 countWoman = 0
-id_app = ''		#enter your app ID
+id_app = '5009897'		#enter your app ID
 print('Введите логин')
 login = input()
 print('Введите пароль')
 password = input()
+
 
 session = vk.AuthSession(app_id=id_app, user_login=login, user_password=password)
 api = vk.API(session)
