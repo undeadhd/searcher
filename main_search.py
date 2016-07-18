@@ -1,3 +1,4 @@
+#MIT license
 import vk
 import time
 import requests
